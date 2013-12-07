@@ -2,7 +2,7 @@ vide - Vim as an IDE.
 =====================
 
 Repository that provides a vimrc file and associated plugins to give an IDE
-of sorts.
+of sorts for the vim editor.
 
 By centralising the repository it should make seting up an envionment quick
 and easy. If you'd like to add any new plugins favor cross platform plugins
