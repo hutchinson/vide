@@ -9,7 +9,6 @@ set nocompatible
 " and for plugins that are filetype specific.
 filetype indent plugin on
 
-
 "------------------------------------------------------------
 " VIDE {{{1
 "

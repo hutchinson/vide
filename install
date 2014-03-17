@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# Exit out at first sign of error
+set -e
+
+# Print an info message with date stamp to the screen.
+function info_message
+{
+	echo $(date) '[INFO]:' $1
+}
+
+function error_message
+{
+	echo $(date) '[ERROR]:' $1
+	exit -1
+}
+
+INSTALL_DIR=$(pwd)
+
+info_message "Checking for Exuberant Ctags"
+CTAGS_BIN=$(which ctags)
+if [ -x $CTAGS_BIN ]; then
+	version_string=$(${CTAGS_BIN} --version | cut -d' ' -f1)
+	
+	if [ $version_string != "Exuberant" ]; then
+		error_message "Exuberant CTags required for VIDE, please download and install from http://ctags.sourceforge.net"
+	fi
+fi
+
+info_message "Installing VIDE"
+
+# Plugins to be installed are:
+# NERDTree
+# MiniBuffExplorer
+# Tagbar
+
+# Download each of the tarballs to a tmp folder.
+TMP_INSTALL_DIR=/tmp/vide_$(date "+%Y-%m-%d")
+info_message "Downloading plugins into $TMP_INSTALL_DIR"
+
+rm -Rf $TMP_INSTALL_DIR
+mkdir -pv $TMP_INSTALL_DIR
+cd $TMP_INSTALL_DIR
+
+###############################################################################
+# Download phase
+###############################################################################
+
+# Grab NERDTree from github
+info_message "Downloading NERDTree"
+git clone https://github.com/scrooloose/nerdtree.git nerdtree
+
+# Grab MiniBufExplorer from github
+info_message "Downloading MiniBufExplorer"
+git clone https://github.com/fholgado/minibufexpl.vim.git minibufexpl
+
+info_message "Downloading Tagbar"
+git clone https://github.com/majutsushi/tagbar.git tagbar
+
+###############################################################################
+# Backup existing files
+###############################################################################
+cd ~/
+
+if [ -a .vimrc ]; then
+	info_message "Backing up .vimrc"
+	rm -f .vimrc~vide_backup
+	mv -f .vimrc .vimrc~vide_backup
+fi
+
+if [ -d .vim ]; then
+	info_message "Backing up .vim"
+	rm -Rf .vim~vide_backup
+	mv -f .vim .vim~vide_backup
+fi
+
+###############################################################################
+# Install new VIDE
+###############################################################################
+cd $INSTALL_DIR
+
+info_message "Installing new .vimrc file"
+cp vimrc_install ~/.vimrc
+
+info_message "Creating fresh .vim folder"
+mkdir -pv ~/.vim
+
+info_message "Copying NERDTree into place"
+cp -R $TMP_INSTALL_DIR/nerdtree/* ~/.vim/
+
+info_message "Copying MiniBufExplorer into place"
+cp -R $TMP_INSTALL_DIR/minibufexpl/* ~/.vim/
+
+info_message "Copying Tagbar into place"
+cp -R $TMP_INSTALL_DIR/tagbar/* ~/.vim/
+
+###############################################################################
+# Clean up the download folder
+###############################################################################
+rm -Rf $TMP_INSTALL_DIR
+
+info_message "VIDE Installation Complete!"
