@@ -1,14 +1,23 @@
 vide - Vim as an IDE.
 =====================
 
-Repository that provides a vimrc file and associated plugins to give an IDE
-of sorts for the vim editor.
+Vim as an IDE provides an out of the box IDE like experience using existing vim plugins.
 
-By centralising the repository it should make seting up an envionment quick
-and easy. If you'd like to add any new plugins favor cross platform plugins
-(vim script based) over those which require compilation.
+Currently vide provides:
+- File browsing via NERDTree
+- Buffer browsing using MiniBufExplorer
+- Function/Class outline viewer using Tagbar
+- A customised .vimrc file which integrates these plugins and other vim features to provide a basic integrated development environment.
+
+Requirements
+============
+- vim 7.3 (known to work on this version)
+- Exuberant CTags available here: http://ctags.sourceforge.net
 
 Installation
 ============
-- Clone the repository and copy the .vimrc file and .vim folder into your
-home directory.
+[WARNING]: The vide installer will attempt to back-up your existing .vim folder and .vimrc file however you should make backup copies yourself. The installer comes with no warranty and no liability is accepted for loss of data, use at your own risk.
+
+- git clone https://github.com/hutchinson/vide.git vide
+- cd vide
+- ./install
