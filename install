@@ -56,6 +56,11 @@ git clone https://github.com/fholgado/minibufexpl.vim.git minibufexpl
 info_message "Downloading Tagbar"
 git clone https://github.com/majutsushi/tagbar.git tagbar
 
+# Grab BufKill
+info_message "Downloading bufkill"
+mkdir -pv bufkill/plugin
+curl http://www.vim.org/scripts/download_script.php?src_id=19161 > bufkill/plugin/bufkill.vim
+
 ###############################################################################
 # Backup existing files
 ###############################################################################
@@ -92,6 +97,9 @@ cp -R $TMP_INSTALL_DIR/minibufexpl/* ~/.vim/
 
 info_message "Copying Tagbar into place"
 cp -R $TMP_INSTALL_DIR/tagbar/* ~/.vim/
+
+info_message "Copying bufkill into place"
+cp -R $TMP_INSTALL_DIR/bufkill/* ~/.vim/
 
 ###############################################################################
 # Clean up the download folder
