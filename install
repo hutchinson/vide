@@ -5,13 +5,27 @@ set -e
 # Print an info message with date stamp to the screen.
 function info_message
 {
-	echo $(date) '[INFO]:' $1
+  echo $(date) '[INFO]:' $1
 }
 
 function error_message
 {
-	echo $(date) '[ERROR]:' $1
-	exit -1
+  echo $(date) '[ERROR]:' $1
+  exit -1
+}
+
+# Checkout a specifc version of a repository
+function checkout_version
+{
+  repository_dir=$1
+  product=$(basename $repository_dir)
+  version=$2
+  install_dir=$3
+
+  info_message "Installing $product - version $version"
+  cd $repository_dir
+  git checkout --quiet tags/$version
+  cd $install_dir
 }
 
 INSTALL_DIR=$(pwd)
@@ -19,19 +33,14 @@ INSTALL_DIR=$(pwd)
 info_message "Checking for Exuberant Ctags"
 CTAGS_BIN=$(which ctags)
 if [ -x $CTAGS_BIN ]; then
-	version_string=$(${CTAGS_BIN} --version | cut -d' ' -f1)
+  version_string=$(${CTAGS_BIN} --version | cut -d' ' -f1)
 	
-	if [ $version_string != "Exuberant" ]; then
-		error_message "Exuberant CTags required for VIDE, please download and install from http://ctags.sourceforge.net"
-	fi
+  if [ $version_string != "Exuberant" ]; then
+    error_message "Exuberant CTags required for VIDE, please download and install from http://ctags.sourceforge.net"
+  fi
 fi
 
 info_message "Installing VIDE"
-
-# Plugins to be installed are:
-# NERDTree
-# MiniBuffExplorer
-# Tagbar
 
 # Download each of the tarballs to a tmp folder.
 TMP_INSTALL_DIR=/tmp/vide_$(date "+%Y-%m-%d")
@@ -49,7 +58,7 @@ cd $TMP_INSTALL_DIR
 info_message "Downloading NERDTree"
 git clone https://github.com/scrooloose/nerdtree.git nerdtree
 
-# Grab MiniBufExplorer from github
+## Grab MiniBufExplorer from github
 info_message "Downloading MiniBufExplorer"
 git clone https://github.com/fholgado/minibufexpl.vim.git minibufexpl
 
@@ -60,6 +69,14 @@ git clone https://github.com/majutsushi/tagbar.git tagbar
 info_message "Downloading bufkill"
 mkdir -pv bufkill/plugin
 curl http://www.vim.org/scripts/download_script.php?src_id=19161 > bufkill/plugin/bufkill.vim
+
+# Grab SuperTab
+info_message "Downloading SuperTab"
+git clone https://github.com/ervandew/supertab.git SuperTab
+
+# Grab delimitMate
+info_message "Downloading delimitMate"
+git clone https://github.com/Raimondi/delimitMate.git delimitMate
 
 ###############################################################################
 # Backup existing files
@@ -89,17 +106,22 @@ cp vimrc_install ~/.vimrc
 info_message "Creating fresh .vim folder"
 mkdir -pv ~/.vim
 
-info_message "Copying NERDTree into place"
+checkout_version $TMP_INSTALL_DIR/nerdtree 4.2.0 $INSTALL_DIR
 cp -R $TMP_INSTALL_DIR/nerdtree/* ~/.vim/
 
-info_message "Copying MiniBufExplorer into place"
+checkout_version $TMP_INSTALL_DIR/minibufexpl v6.5.2 $INSTALL_DIR
 cp -R $TMP_INSTALL_DIR/minibufexpl/* ~/.vim/
 
-info_message "Copying Tagbar into place"
+checkout_version $TMP_INSTALL_DIR/tagbar v2.6.1 $INSTALL_DIR
 cp -R $TMP_INSTALL_DIR/tagbar/* ~/.vim/
 
-info_message "Copying bufkill into place"
 cp -R $TMP_INSTALL_DIR/bufkill/* ~/.vim/
+
+checkout_version $TMP_INSTALL_DIR/SuperTab 2.0 $INSTALL_DIR
+cp -R $TMP_INSTALL_DIR/SuperTab/* ~/.vim/
+
+checkout_version $TMP_INSTALL_DIR/delimitMate 2.6 $INSTALL_DIR
+cp -R $TMP_INSTALL_DIR/delimitMate/* ~/.vim/
 
 ###############################################################################
 # Clean up the download folder

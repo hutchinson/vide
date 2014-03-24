@@ -1,4 +1,5 @@
-" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
+" Original file obtained from http://vim.wikia.com/wiki/Vim_on_Freenode.
+" Subsequent modifications by: Dan Hutchinson
 
 " Set 'nocompatible' to ward off unexpected things that your distro might
 " have made, as well as sanely reset options when re-sourcing .vimrc
@@ -15,42 +16,47 @@ filetype indent plugin on
   
 if has("gui_running")
 
-  " Switch on spell checking
+  " Colour scheme
+  colorscheme desert
+
+  " Full screen
+  set lines=999
+  set columns=999
+
+  " Spell checking (defaults to ON for all file types, scope below
   if has("spell")
-    " turn spelling on by default
-    setlocal spell spelllang=en_gb
-    map ss :setlocal spell! spelllang=en_gb<cr>
+    autocmd BufRead,BufNewFile * setlocal spell spelllang=en_uk
   endif
   
-  " Enable syntax highlighting
+  " Syntax highlighting, current we enable parsing from
+  " the start of the file as the syntax parser can sometimes get
+  " itself in knots.
   syntax on
   autocmd BufEnter * :syntax sync fromstart
 
-  " Nice colours
-  colorscheme desert
-
-  " Force vim file navigation
+  " Strict vim navigation
   noremap <up> <nop>
   noremap <down> <nop>
   noremap <left> <nop>
   noremap <right> <nop>
 
-  set lines=999
-  set columns=999
-
+  " Fast switching between buffers
   map <C-W> <C-W><C-W>
 
+  " Minibufexplorer options
   let g:miniBufExplMapCTabSwitchBufs = 1
 
+  " NERDTree options
   let g:NERDTreeWinSize = 40
-
   autocmd VimEnter * NERDTree
   autocmd VimEnter * wincmd p
 
+  " Tagbar options
   autocmd VimEnter * TagbarToggle
 
-  " Enable use only in GUI mode
+  " Mouse support
   set mouse=a
+
 endif
 
 " One such option is the 'hidden' option, which allows you to re-use the same
