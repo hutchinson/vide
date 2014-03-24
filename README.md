@@ -29,3 +29,10 @@ your own risk.
 - git clone https://github.com/hutchinson/vide.git vide
 - cd vide
 - ./install
+
+Customisation
+=============
+- Change any of the defaults in the .vimrc to better suit your needs, future
+  releases will aim to make this process easier.
+- If you'd like any plugins adding to the package let me know, alternatively
+  add them yourself and I'll merge the changes into the installer script.
