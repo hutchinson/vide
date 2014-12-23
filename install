@@ -78,6 +78,10 @@ git clone https://github.com/ervandew/supertab.git SuperTab
 info_message "Downloading delimitMate"
 git clone https://github.com/Raimondi/delimitMate.git delimitMate
 
+# Grab airline
+info_message "Downloading airline"
+git clone https://github.com/bling/vim-airline.git airline
+
 ###############################################################################
 # Backup existing files
 ###############################################################################
@@ -122,6 +126,9 @@ cp -R $TMP_INSTALL_DIR/SuperTab/* ~/.vim/
 
 checkout_version $TMP_INSTALL_DIR/delimitMate 2.6 $INSTALL_DIR
 cp -R $TMP_INSTALL_DIR/delimitMate/* ~/.vim/
+
+checkout_version $TMP_INSTALL_DIR/airline v0.7 $INSTALL_DIR
+cp -R $TMP_INSTALL_DIR/airline/* ~/.vim/
 
 ###############################################################################
 # Clean up the download folder
